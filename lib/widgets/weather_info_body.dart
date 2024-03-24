@@ -19,7 +19,8 @@ class WeatherInfoBody extends StatelessWidget {
           Column(
             children: [
               Text(weatherModel.cityName),
-              Text(weatherModel.date),
+              Text(
+                  'Updated at: ${(weatherModel.date.hour)}:${weatherModel.date.minute}'),
             ],
           ),
           const SizedBox(height: 32),
@@ -29,15 +30,26 @@ class WeatherInfoBody extends StatelessWidget {
               SizedBox(
                 width: 64,
                 height: 64,
-                child: Image.network(weatherModel.image),
+                child: Image.network(
+                  weatherModel.image.startsWith("https:")
+                      ? weatherModel.image
+                      : "https:${weatherModel.image}",
+                ),
               ),
               const SizedBox(width: 32),
-              const Text('Hello World!'),
+              Text(
+                '${weatherModel.temp.toStringAsFixed(1)} ℃',
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.displaySmall!.fontSize,
+                ),
+              ),
               const SizedBox(width: 32),
               Column(
                 children: [
-                  Text('Min Temp: ${weatherModel.minTemp}℃'),
-                  Text('Max Temp: ${weatherModel.maxTemp}℃'),
+                  Text(
+                      'Min Temp: ${weatherModel.minTemp.toStringAsFixed(1)} ℃'),
+                  Text(
+                      'Max Temp: ${weatherModel.maxTemp.toStringAsFixed(1)} ℃'),
                 ],
               ),
             ],
