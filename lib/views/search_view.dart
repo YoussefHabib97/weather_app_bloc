@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_app_bloc/cubits/get_weather_cubit/get_weather_cubit.dart';
 import 'package:weather_app_bloc/models/weather_model.dart';
 import 'package:weather_app_bloc/services/weather_service.dart';
 
@@ -24,15 +26,11 @@ class SearchView extends StatelessWidget {
                 (Icons.search_outlined),
               ),
             ),
-            onSubmitted: (value) async {
+            onSubmitted: (value) {
               if (value.trim().isNotEmpty) {
-                try {
-                  WeatherModel weatherModel =
-                      await WeatherService().getWeather(cityName: value.trim());
-                  log(weatherModel.cityName.toString());
-                } on Exception {
-                  rethrow;
-                }
+                var getWeatherCubit = BlocProvider.of<GetWeatherCubit>(context);
+                getWeatherCubit.getWeather(cityName: value.trim());
+                Navigator.pop(context);
               }
             },
           ),
